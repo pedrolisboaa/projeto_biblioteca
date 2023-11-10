@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+    <h1>Livros!</h1>
+    <h2><a href="{% url 'livro_adicionar' %}">Adicionar novo livro</a></h2>
+
+    <!--Caixa de busca-->
+    <div class="main-search-container">
+        <form action="{% url 'buscar_livro' %}" method="get">
+            <div class="search-container">
+                <input type="search" name="q" id="buscar" value="{{ valor_buscar }}" class="search-input">
+                <button type="submit" class="search-button">Buscar Livro</button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Editora</th>
+                <th>Genero</th>
+                <th>Editar</th>
+                <th>Remover</th>
+            </tr>
+            {% for livro in livros %}
+                <tr>
+                    <td>{{livro.id}}</td>
+                    <td>{{livro.titulo}}</td>
+                    <td>{{livro.autor}}</td>
+                    <td>{{livro.editora}}</td>
+                    <td>{{livro.assunto}}</td>
+                    <td><a href="{% url 'livro_atualizar' livro.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td><a href="{% url 'livro_deletar' livro.id %}"><i class="fa-solid fa-trash"></i></a></td>
+                    
+                </tr>
+            {% endfor %}
+        </table>    
+
+        <!--Paginação-->
+        {% if livros %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if livros.has_previous %}
+                        <a href="?page=1&q={{request.GET.q.strip}}">&laquo; Primeira</a>
+                        <a href="?page={{ livros.previous_page_number }}&q={{request.GET.q.strip}}">Voltar</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Página {{ livros.number }} de {{ livros.paginator.num_pages }}.
+                    </span>
+            
+                    {% if livros.has_next %}
+                        <a href="?page={{ livros.next_page_number }}&q={{request.GET.q.strip}}">Próxima</a>
+                        <a href="?page={{ livros.paginator.num_pages }}&q={{request.GET.q.strip}}">Última</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% endif %}
+
+{% endblock conteudo %}

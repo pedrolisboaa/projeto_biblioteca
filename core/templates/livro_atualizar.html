@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+    <h1>Atualizando<h1>
+
+    {% for mensagem in messages %}
+
+        <div class="alert alert-success" role="alert">
+            {{mensagem}}
+        </div>
+
+    {% endfor %}
+
+    <form action="{% url 'livro_atualizar' livro.id %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn btn-secondary">Editar Livro</button>
+    </form>
+
+{% endblock conteudo %}

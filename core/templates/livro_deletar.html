@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+    <h2>Confirmação de Exclusão</h2>
+    <p>Tem certeza que deseja excluir o livro "{{ livro.titulo }}"?</p>
+    <form method="post" action="{% url 'livro_deletar' livro.id %}">
+        {% csrf_token %}
+        <button type="submit">Confirmar</button>
+        <a href="{% url 'livro' %}">Cancelar</a>
+    </form>
+{% endblock %}
