@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Livro
+from .models import Livro, Leitor
 from .form import LivroForm
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -94,4 +94,42 @@ def livro_deletar(request, id_livro):
     return render(request, 'livro_deletar.html', {'livro': livro})
 
 
-  
+
+# Leitor
+
+def leitor(request):
+    leitores = Leitor.objects.order_by('nome')
+    
+    paginator = Paginator(leitores, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'leitores': page_obj
+    }
+    
+    return render(request, 'leitor.html', context)
+
+
+def buscar_leitor(request):
+    valor_buscar = request.GET.get('q', '').strip()
+    if valor_buscar == '':
+        return redirect('leitor')
+    leitores = Leitor.objects.filter(
+        Q(nome__icontains=valor_buscar)|
+        Q(sobrenome__icontains=valor_buscar)|
+        Q(cpf__icontains=valor_buscar)|
+        Q(email__icontains=valor_buscar)|
+        Q(telefone__icontains=valor_buscar)
+    ).order_by('-id')
+    
+    
+    paginator = Paginator(leitores, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'leitores': page_obj
+    }
+    
+    return render(request, 'leitor.html', context)

@@ -32,6 +32,11 @@ ESTADO_UF = [
     ('TO', 'Tocantins')
 ]
 
+SEXO = [
+    ('M', 'Masculino'),
+    ('F', 'Feminino'),
+]
+
 
 class Assunto(models.Model):
     assunto = models.CharField(max_length=150)
@@ -75,3 +80,22 @@ class Livro(models.Model):
     
     def __str__(self):
         return self.titulo
+
+
+class Leitor(models.Model):
+    nome = models.CharField(max_length=100)
+    sobrenome = models.CharField(max_length=100)
+    cpf = models.IntegerField()
+    email = models.EmailField(unique=True)
+    telefone = models.CharField(max_length=20)
+    sexo = models.CharField(max_length=1, choices=SEXO)
+    dt_cadastramento = models.DateField(auto_now_add=True)
+    dt_ataulizacao = models.DateField(auto_now=True)
+    
+    class Meta:
+        verbose_name ='Leitor'
+        verbose_name_plural = 'Leitores'
+        
+    def __str__(self):
+        return self.nome
+    
