@@ -1,22 +1,23 @@
 {% extends "base.html" %}
 
+
 {% block conteudo %}
 
-    <h1>Cadastrar novo livro<h1>
-    
-    <!--mensagem de erro-->
-    {% for mensagem in messages %}
+    <h2>Cadastrar novo Leitor</h2>
+
+    {% for message in messages %}
         <div class="alert alert-success" role="alert">
-            {{mensagem}}
+            {{message}}
         </div>
-    {% endfor %}    
-    
-    <!--Formulário de cadastro-->
-    <form method="post" action="{% url 'livro_adicionar' %}">
+    {% endfor %}
+
+    <!--Formulário de cadastro livro-->
+    <form method="post" action="{% url 'leitor_adicionar' %}">
         {% csrf_token %}
         {{ form }}
         <button class="btn btn-secondary" type="submit">Cadastrar</button>
     </form>
+
 
 
 {% endblock conteudo %}

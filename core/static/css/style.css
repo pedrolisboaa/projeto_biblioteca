@@ -61,7 +61,7 @@ label {
 
 /* Tabelas */
 table {
-  width: 80%;
+  width: 95%;
   border-collapse: collapse;
   margin: 0 auto;
 }
@@ -118,4 +118,18 @@ tr:nth-child(odd) {
 
 .search-button:hover {
   background-color: #45a049;
+}
+
+/* Estilo para mensagens de erro nos formulários */
+.errorlist {
+  color: #f73144; /* Cor vermelha padrão do Bootstrap para mensagens de erro */
+  margin-bottom: 15px; /* Adapte conforme necessário */
+  margin-left: 20px;
+  
+}
+
+/* Estilo para mensagens de erro individuais */
+.errorlist li {
+  margin-bottom: 5px; /* Espaçamento entre mensagens de erro */
+  font-weight: bold;
 }

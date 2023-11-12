@@ -85,7 +85,7 @@ class Livro(models.Model):
 class Leitor(models.Model):
     nome = models.CharField(max_length=100)
     sobrenome = models.CharField(max_length=100)
-    cpf = models.IntegerField()
+    cpf = models.CharField(max_length=14)
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=20)
     sexo = models.CharField(max_length=1, choices=SEXO)

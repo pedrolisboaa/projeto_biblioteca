@@ -2,7 +2,7 @@
 {% block conteudo %}
 
     <h1>Leitor</h1>
-    {% comment %} <h2><a href="{% url 'livro_adicionar' %}">Adicionar novo livro</a></h2> {% endcomment %}
+    <h2><a href="{% url 'leitor_adicionar' %}">Adicionar novo Leitor</a></h2>
 
     <!--Caixa de busca-->
      <div class="main-search-container">
@@ -25,6 +25,8 @@
                 <th>Telefone</th>
                 <th>Sexo</th>
                 <th>Data de cadastro</th>
+                <th>Atualizar</th>
+                <th>Excluir</th>
             </tr>
             {% for leitor in leitores %}
                 <tr>
@@ -36,8 +38,8 @@
                     <td>{{leitor.telefone}}</td>
                     <td>{{leitor.sexo}}</td>
                     <td>{{leitor.dt_cadastramento}}</td>
-                    {% comment %} <td><a href="{% url 'livro_atualizar' livro.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                    <td><a href="{% url 'livro_deletar' livro.id %}"><i class="fa-solid fa-trash"></i></a></td> {% endcomment %}
+                    <td><a href="{% url 'leitor_atualizar' leitor.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td><a href="{% url 'leitor_deletar' leitor.id %}"><i class="fa-solid fa-trash"></i></a></td> 
                     
                 </tr>
             {% endfor %}

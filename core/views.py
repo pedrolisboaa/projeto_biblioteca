@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Livro, Leitor
-from .form import LivroForm
+from .form import LivroForm, LeitorForm
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.urls import reverse
 
 # Create your views here.
 def index(request):
@@ -133,3 +134,45 @@ def buscar_leitor(request):
     }
     
     return render(request, 'leitor.html', context)
+
+
+def leitor_adicionar(request):
+    if request.method == 'POST':
+        form = LeitorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Leitor cadastrado com sucesso.')
+            return render(request, 'leitor_adicionar.html') 
+    else:
+        form = LeitorForm()
+
+    return render(request, 'leitor_adicionar.html', {'form': form})
+
+
+def leitor_atualizar(request, id_leitor):
+    leitor = Leitor.objects.get(pk=id_leitor)
+
+    if request.method == 'POST':
+        form = LeitorForm(request.POST, instance=leitor)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Leitor atualiado com sucesso.')
+            return redirect('leitor_atualizar', id_leitor=leitor.id)
+    else:
+        form = LeitorForm(instance=leitor)
+
+    context = {
+        'leitor': leitor,
+        'form': form
+    }
+    
+    return render(request, 'leitor_atualizar.html', context)
+
+
+def leitor_deletar(request, id_leitor):
+    leitor = Leitor.objects.get(pk=id_leitor)
+    if request.method == 'POST':
+        leitor.delete()
+        return redirect('leitor')
+
+    return render(request, 'leitor_deletar.html', {'leitor': leitor})
