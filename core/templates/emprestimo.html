@@ -10,4 +10,35 @@
         <button class="btn btn-secondary" type="submit">Realizar emprestimo</button>
     </form>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" />
+
+    <script>
+        $(document).ready(function () {
+            // Configuração do Select2 para o campo de livro
+            $("#id_livro").select2({
+                placeholder: "Pesquisar livro...",
+                allowClear: true,
+                ajax: {
+                    url: "{% url 'livro-autocomplete' %}",
+                    dataType: 'json',
+                }
+            });
+    
+            // Configuração do Select2 para o campo de leitor
+            $("#id_leitor").select2({
+                placeholder: "Pesquisar leitor...",
+                allowClear: true,
+                ajax: {
+                    url: "{% url 'leitor-autocomplete' %}",
+                    dataType: 'json',
+                }
+            });
+        });
+
+        // Dá autofocus ao campo de pesquisa após a inicialização do Select2
+        $(".select2-search__field").autofocus();
+    </script>
+
 {% endblock conteudo %}

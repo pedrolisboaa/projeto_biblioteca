@@ -4,7 +4,8 @@ from .form import LivroForm, LeitorForm, EmprestimoForm
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.urls import reverse
+from dal import autocomplete
+
 
 # Create your views here.
 def index(request):
@@ -181,25 +182,35 @@ def leitor_deletar(request, id_leitor):
 # Emprestimo
 
 def emprestimo(request):
-    if request.method == 'POST':
-        form = EmprestimoForm(request.POST)
-        if form.is_valid():
-            emprestimo = form.save(commit=False)
-            livro = emprestimo.livro
+    
+    form = EmprestimoForm()
+    
+    context = {
+        'form': form
+    }
+    
 
-            # Verificar a disponibilidade do livro
-            if livro.disponivel_para_emprestimo():
-                emprestimo.save()
+    return render(request, 'emprestimo.html', context )
 
-                # Atualizar o status do livro para indisponível
-                livro.disponivel = False
-                livro.save()
 
-                messages.success(request, 'Empréstimo realizado com sucesso.')
-            else:
-                messages.error(request, 'Livro não disponível para empréstimo.')
-                return redirect('emprestimo')
-    else:
-        form = EmprestimoForm()
 
-    return render(request, 'emprestimo.html', {'form': form})
+class LeitorAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Leitor.objects.all()
+
+        if self.q:
+            qs = qs.filter(nome__icontains=self.q) | qs.filter(sobrenome__icontains=self.q) | qs.filter(cpf__icontains=self.q)
+
+        return qs
+
+class LivroAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Livro.objects.all().filter(disponivel=True)
+        
+        if self.q:
+            qs = qs.filter(titulo__icontains=self.q) | qs.filter(autor__icontains=self.q)
+        
+        return qs
+    
+
+

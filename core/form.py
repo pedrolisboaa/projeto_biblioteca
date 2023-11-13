@@ -1,7 +1,6 @@
 from django import forms 
 from .models import Livro, Leitor, Emprestimo
-
-
+from dal import autocomplete
 
 
 class LivroForm(forms.ModelForm):
@@ -55,14 +54,32 @@ class LeitorForm(forms.ModelForm):
             )
         return email
         
+# class EmprestimoForm(forms.ModelForm):
+    
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         # Filtando por livro 
+#         self.fields['livro'].queryset = Livro.objects.filter(disponivel=True)
+#         self.fields['leitor'].queryset = Leitor.objects.all()
+    
+#     class Meta:
+#         model = Emprestimo
+#         fields = ('livro', 'leitor', 'data_emprestimo', 'data_devolucao')     
+#         widgets = {
+#             'livro': forms.Select(attrs={'class': 'form-control'}),
+#             'leitor': forms.Select(attrs={'class': 'form-control'}),
+#             'data_emprestimo': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+#             'data_devolucao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+#         }
+
+
 class EmprestimoForm(forms.ModelForm):
     class Meta:
         model = Emprestimo
         fields = ('livro', 'leitor', 'data_emprestimo', 'data_devolucao')     
-        widgest = {
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'leitor': forms.TextInput(attrs={'class': 'form-control'}),
-            'data_emprestimo': forms.DateInput(attrs={'class': 'form-control'}),
-            'data_devolucao': forms.DateInput(attrs={'class': 'form-control'}),
+        widgets = {
+            'livro': forms.Select(attrs={'class': 'form-control'}),
+            'leitor': autocomplete.ModelSelect2(url='leitor-autocomplete', attrs={'class': 'form-control'}),
+            'data_emprestimo': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'data_devolucao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
-        

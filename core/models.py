@@ -84,24 +84,6 @@ class Livro(models.Model):
         return self.titulo
     
 
-    def emprestar(self):
-        if self.disponivel:
-            self.disponivel = False
-            self.save()
-    
-
-    def devovler(self):
-        if not self.disponivel:
-            self.disponivel = True
-            self.save()
-
-    def emprestado(self):
-        return not self.disponivel
-    
-    
-    def disponivel_para_emprestimo(self):
-        return self.disponivel and not Emprestimo.objects.filter(livro=self, data_devolucao__isnull=False).exists()
-
 
 class Leitor(models.Model):
     nome = models.CharField(max_length=100)
@@ -118,7 +100,7 @@ class Leitor(models.Model):
         verbose_name_plural = 'Leitores'
         
     def __str__(self):
-        return self.nome
+        return f'{self.nome} {self.sobrenome} - {self.cpf}'
 
 
 class Emprestimo(models.Model):
