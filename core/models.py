@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+
 
 # Create your models here.
 ESTADO_UF = [
@@ -71,6 +71,7 @@ class Livro(models.Model):
     editora = models.ForeignKey(Editora, on_delete=models.SET_NULL, null=True)
     assunto = models.ForeignKey(Assunto, on_delete=models.SET_NULL, null=True)
     numero_paginas = models.IntegerField()
+    disponivel = models.BooleanField(default=True)
     dt_cadastramento = models.DateField(auto_now_add=True)
     dt_ataulizacao = models.DateField(auto_now=True)
 
@@ -78,8 +79,28 @@ class Livro(models.Model):
         verbose_name = 'Livro'
         verbose_name_plural = 'Livros'
     
+
     def __str__(self):
         return self.titulo
+    
+
+    def emprestar(self):
+        if self.disponivel:
+            self.disponivel = False
+            self.save()
+    
+
+    def devovler(self):
+        if not self.disponivel:
+            self.disponivel = True
+            self.save()
+
+    def emprestado(self):
+        return not self.disponivel
+    
+    
+    def disponivel_para_emprestimo(self):
+        return self.disponivel and not Emprestimo.objects.filter(livro=self, data_devolucao__isnull=False).exists()
 
 
 class Leitor(models.Model):
@@ -98,4 +119,15 @@ class Leitor(models.Model):
         
     def __str__(self):
         return self.nome
+
+
+class Emprestimo(models.Model):
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
+    leitor = models.ForeignKey(Leitor, on_delete=models.CASCADE)
+    data_emprestimo = models.DateField()
+    data_devolucao = models.DateField()
+
+    def __str__(self):
+        return f'{self.livro} emprestado para {self.leitor} - {self.leitor.cpf}'
+
     

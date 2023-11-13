@@ -1,6 +1,7 @@
 from django import forms 
-from .models import Livro, Leitor
-from .models import Leitor
+from .models import Livro, Leitor, Emprestimo
+
+
 
 
 class LivroForm(forms.ModelForm):
@@ -54,4 +55,14 @@ class LeitorForm(forms.ModelForm):
             )
         return email
         
-       
+class EmprestimoForm(forms.ModelForm):
+    class Meta:
+        model = Emprestimo
+        fields = ('livro', 'leitor', 'data_emprestimo', 'data_devolucao')     
+        widgest = {
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'leitor': forms.TextInput(attrs={'class': 'form-control'}),
+            'data_emprestimo': forms.DateInput(attrs={'class': 'form-control'}),
+            'data_devolucao': forms.DateInput(attrs={'class': 'form-control'}),
+        }
+        

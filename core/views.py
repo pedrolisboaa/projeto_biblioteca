@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Livro, Leitor
-from .form import LivroForm, LeitorForm
+from .form import LivroForm, LeitorForm, EmprestimoForm
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -176,3 +176,30 @@ def leitor_deletar(request, id_leitor):
         return redirect('leitor')
 
     return render(request, 'leitor_deletar.html', {'leitor': leitor})
+
+
+# Emprestimo
+
+def emprestimo(request):
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST)
+        if form.is_valid():
+            emprestimo = form.save(commit=False)
+            livro = emprestimo.livro
+
+            # Verificar a disponibilidade do livro
+            if livro.disponivel_para_emprestimo():
+                emprestimo.save()
+
+                # Atualizar o status do livro para indisponível
+                livro.disponivel = False
+                livro.save()
+
+                messages.success(request, 'Empréstimo realizado com sucesso.')
+            else:
+                messages.error(request, 'Livro não disponível para empréstimo.')
+                return redirect('emprestimo')
+    else:
+        form = EmprestimoForm()
+
+    return render(request, 'emprestimo.html', {'form': form})

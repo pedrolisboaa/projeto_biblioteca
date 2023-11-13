@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Assunto, Editora, Livro, Leitor
+from .models import Assunto, Editora, Livro, Leitor, Emprestimo
 
 # Register your models here.
 @admin.register(Assunto)
@@ -14,12 +14,18 @@ class EditoraAdmin(admin.ModelAdmin):
     
 @admin.register(Livro)
 class LivroAdmin(admin.ModelAdmin):
-    list_display = 'id','titulo', 'autor', 'editora', 'assunto', 'numero_paginas', 'dt_cadastramento' 
-    ordering = 'id',
+    list_display = 'id','titulo','disponivel', 'autor', 'editora', 'assunto', 'numero_paginas', 'dt_cadastramento' 
+    ordering = 'id','disponivel'
+    #list_editable = ('disponivel',)
+    
     
 @admin.register(Leitor)
 class LeitorAdmin(admin.ModelAdmin):
     list_display = 'nome', 'sobrenome','cpf', 'email', 'telefone', 'sexo', 'dt_cadastramento',
     ordering = 'nome',
 
+
+@admin.register(Emprestimo)
+class EmprestimoAdmin(admin.ModelAdmin):
+    list_display = 'livro', 'leitor', 'data_emprestimo', 'data_devolucao'
 

@@ -20,6 +20,7 @@
             <tr>
                 <th>ID</th>
                 <th>Título</th>
+                <th>Disponível</th>
                 <th>Autor</th>
                 <th>Editora</th>
                 <th>Genero</th>
@@ -30,6 +31,15 @@
                 <tr>
                     <td>{{livro.id}}</td>
                     <td>{{livro.titulo}}</td>
+                    <td>
+                        
+                        {% if livro.disponivel %}
+                            <i class="fa-solid fa-book-open"></i>
+                        {% else %}
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        {% endif %}
+                    
+                    </td>
                     <td>{{livro.autor}}</td>
                     <td>{{livro.editora}}</td>
                     <td>{{livro.assunto}}</td>

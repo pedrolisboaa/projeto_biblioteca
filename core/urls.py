@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import index, livro, buscar_livro, livro_adicionar, livro_atualizar, livro_deletar
 from .views import leitor, buscar_leitor, leitor_adicionar, leitor_atualizar, leitor_deletar
+from .views import emprestimo
 
 
 urlpatterns = [
@@ -22,4 +23,7 @@ urlpatterns = [
     path('leitor/adicionar/', leitor_adicionar, name='leitor_adicionar'),
     path('leitor/atualizar/<int:id_leitor>', leitor_atualizar, name='leitor_atualizar'),
     path('leitor/deletar/<int:id_leitor>', leitor_deletar, name='leitor_deletar'),
+
+    # Emprestimo
+    path('emprestimo/', emprestimo, name='emprestimo'),
 ]
