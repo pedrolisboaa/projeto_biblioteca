@@ -78,7 +78,7 @@ class EmprestimoForm(forms.ModelForm):
         model = Emprestimo
         fields = ('livro', 'leitor', 'data_emprestimo', 'data_devolucao')     
         widgets = {
-            'livro': forms.Select(attrs={'class': 'form-control'}),
+            'livro':  autocomplete.ModelSelect2(url='livro-autocomplete', attrs={'class': 'form-control'}),
             'leitor': autocomplete.ModelSelect2(url='leitor-autocomplete', attrs={'class': 'form-control'}),
             'data_emprestimo': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'data_devolucao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
