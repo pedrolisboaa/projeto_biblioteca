@@ -191,6 +191,12 @@ def emprestimo(request):
             if not livro.disponivel:
                 form.add_error('livro', 'Este livro não está disponível para empréstimo.')
                 return render(request, 'emprestimo.html', {'form': form})
+            
+            # Verificando as datas:
+            data_emprestimo = form.cleaned_data['data_emprestimo']
+            data_devolucao = form.cleaned_data['data_devolucao']
+            
+            if data_emprestimo and data_devolucao and data_devolucao <
 
             # Atualize o status de disponibilidade do livro
             livro.disponivel = False
