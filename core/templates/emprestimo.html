@@ -6,7 +6,15 @@
 
     <form method="post" action="{% url 'emprestimo' %}">
         {% csrf_token %}
+
+        {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         {{ form }}
+
         <button class="btn btn-secondary" type="submit">Realizar emprestimo</button>
     </form>
 
@@ -38,7 +46,6 @@
         });
 
         // Dá autofocus ao campo de pesquisa após a inicialização do Select2
-        $(".select2-search__field").autofocus();
     </script>
 
 {% endblock conteudo %}

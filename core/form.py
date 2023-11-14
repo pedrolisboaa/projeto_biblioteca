@@ -83,3 +83,13 @@ class EmprestimoForm(forms.ModelForm):
             'data_emprestimo': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'data_devolucao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
+        
+        def clean(self):
+            cleaned_data = super().clean()
+            livro = cleaned_data.get('livro')
+
+            # Verifique se o livro está disponível
+            if livro and not livro.disponivel:
+                raise forms.ValidationError('Este livro não está disponível para empréstimo.')
+
+    

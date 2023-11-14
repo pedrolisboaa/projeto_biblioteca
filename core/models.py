@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 # Create your models here.
@@ -108,6 +109,7 @@ class Emprestimo(models.Model):
     leitor = models.ForeignKey(Leitor, on_delete=models.CASCADE)
     data_emprestimo = models.DateField()
     data_devolucao = models.DateField()
+    finalizada = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.livro} emprestado para {self.leitor} - {self.leitor.cpf}'

@@ -27,5 +27,5 @@ class LeitorAdmin(admin.ModelAdmin):
 
 @admin.register(Emprestimo)
 class EmprestimoAdmin(admin.ModelAdmin):
-    list_display = 'livro', 'leitor', 'data_emprestimo', 'data_devolucao'
+    list_display = 'livro', 'leitor', 'data_emprestimo', 'data_devolucao', 'finalizada'
 

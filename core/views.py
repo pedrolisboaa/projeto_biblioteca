@@ -182,14 +182,33 @@ def leitor_deletar(request, id_leitor):
 # Emprestimo
 
 def emprestimo(request):
-    
-    form = EmprestimoForm()
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST)
+        if form.is_valid():
+            livro = form.cleaned_data['livro']
+
+            # Verifique novamente se o livro está disponível (pode ter mudado desde a validação do formulário)
+            if not livro.disponivel:
+                form.add_error('livro', 'Este livro não está disponível para empréstimo.')
+                return render(request, 'emprestimo.html', {'form': form})
+
+            # Atualize o status de disponibilidade do livro
+            livro.disponivel = False
+            livro.save()
+
+            # Salve o empréstimo
+            emprestimo = form.save()    
+            messages.success(request, 'Emprestimo realizado com sucesso.')
+            return redirect('emprestimo')
+        
+    else:
+        form = EmprestimoForm()
+        
     
     context = {
         'form': form
     }
     
-
     return render(request, 'emprestimo.html', context )
 
 
