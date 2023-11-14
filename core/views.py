@@ -196,7 +196,11 @@ def emprestimo(request):
             data_emprestimo = form.cleaned_data['data_emprestimo']
             data_devolucao = form.cleaned_data['data_devolucao']
             
-            if data_emprestimo and data_devolucao and data_devolucao <
+            if data_emprestimo and data_devolucao and data_devolucao < data_emprestimo:
+                print('Ta doidão?')
+                messages.error(request, 'Hoje não meu parceiro.')
+                return redirect('emprestimo')
+                
 
             # Atualize o status de disponibilidade do livro
             livro.disponivel = False
