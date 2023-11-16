@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+    <h1>Devolução de livros</h1>
+
+        <div>
+            <table>
+                <tr>
+                    <td><strong>Livro</strong></td>
+                    <td>Leitor</td>
+                    <td>Data de Emprestimo</td>
+                    <td>Data de Devolução</td>
+                    <td>Confirmar Devolução</td>
+                </tr>
+                {% for emprestimo in emprestimos %}
+
+                    <tr>
+                        <td>{{emprestimo.livro}}</td>
+                        <td>{{emprestimo.leitor}}</td>
+                        <td>{{emprestimo.data_emprestimo}}</td>
+                        <td>{{emprestimo.data_devolucao}}</td>
+                        <td>
+                            <a href="{% url 'devolucao_confirmar' emprestimo.id %}">
+                                <i class="fa-sharp fa-solid fa-check fa-2xl"></i>
+                            </a>
+                        </td>
+                        
+                        
+                        
+                        
+        
+                    </tr>
+                  
+                {% endfor %}
+            </table>
+        </div>
+
+    
+  
+
+{% endblock conteudo %}

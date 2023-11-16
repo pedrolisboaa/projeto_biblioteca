@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+    <h2>Confirmação de Devolução</h2>
+        <p>Tem certeza que deseja devolver o livro "{{ emprestimo.livro }}"?</p>
+            
+        <form method="post" action="{% url 'devolucao_confirmar' id_emprestimo=emprestimo.id %}">
+            {% csrf_token %}
+            <button type="submit">Confirmar</button>
+            <a href="{% url 'emprestimo' %}">Cancelar</a>
+        </form>
+        {% endblock conteudo %}
+    
+    
+   
+    
+   

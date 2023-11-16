@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Livro, Leitor
+from .models import Livro, Leitor, Emprestimo
 from .form import LivroForm, LeitorForm, EmprestimoForm
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -198,7 +198,7 @@ def emprestimo(request):
             
             if data_emprestimo and data_devolucao and data_devolucao < data_emprestimo:
                 print('Ta doidão?')
-                messages.error(request, 'Hoje não meu parceiro.')
+                messages.error(request, 'A data de devolução não deve ser menor que a deta de emprestimo.')
                 return redirect('emprestimo')
                 
 
@@ -241,5 +241,39 @@ class LivroAutocomplete(autocomplete.Select2QuerySetView):
         
         return qs
     
+
+def devolucao(request):
+    emprestimos = Emprestimo.objects.filter(finalizada=False)
+    
+    context = {
+        'emprestimos': emprestimos
+    }
+    
+    return render(request, 'devolucao.html', context)
+
+
+def devolucao_confirmar(request, id_emprestimo):
+    emprestimo = Emprestimo.objects.get(pk=id_emprestimo)
+    
+    print(emprestimo.livro)
+    
+    if request.method == 'POST':
+        emprestimo.finalizada = True
+        emprestimo.save()
+        
+        livros = Livro.objects.filter(titulo=emprestimo.livro.titulo)
+        if livros.exists():
+            livro = livros.first()
+            livro.disponivel = True
+            livro.save()
+        
+        return redirect('devolucao')
+ 
+    context = {
+        'emprestimo': emprestimo,
+    }
+    
+    return render(request, 'devolucao_confirmar.html', context)
+
 
 

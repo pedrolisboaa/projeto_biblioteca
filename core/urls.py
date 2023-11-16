@@ -2,6 +2,7 @@ from django.urls import path, include
 from .views import index, livro, buscar_livro, livro_adicionar, livro_atualizar, livro_deletar
 from .views import leitor, buscar_leitor, leitor_adicionar, leitor_atualizar, leitor_deletar
 from .views import emprestimo, LeitorAutocomplete, LivroAutocomplete
+from .views import devolucao, devolucao_confirmar
 
 
 
@@ -28,5 +29,11 @@ urlpatterns = [
     # Emprestimo
     path('emprestimo/', emprestimo, name='emprestimo'),
     path('leitor-autocomplete/', LeitorAutocomplete.as_view(), name='leitor-autocomplete'),
-    path('livro-autocomplete/', LivroAutocomplete.as_view(), name='livro-autocomplete')
+    path('livro-autocomplete/', LivroAutocomplete.as_view(), name='livro-autocomplete'),
+    
+    # Devolução
+    path('devolucao/', devolucao, name='devolucao'),
+    path('devolucao/confirmar/<int:id_emprestimo>/', devolucao_confirmar, name='devolucao_confirmar'),
+
+
 ]
